@@ -12,7 +12,7 @@
     <div class="search__form">
         <form>
             {% csrf_token %}
-            <input name="keyword" type="text" placeholder="Axtar...">
+            <input type="text" name="keyword" placeholder="Axtar...">
             <button type="submit" class="btn">Axtar</button>
         </form>
     </div>
@@ -25,13 +25,18 @@
                     <h4>{{article.title}}</h4>
                     <p>{{article.content|safe|truncatechars:60}}</p>
                     <small>{{article.create_date}}</small>
-                    <img class="items" src=../Media/{{article.image}} alt="">
+                    <img class="items" src=../Media/{{article.image}} alt="">          
                 </li>
-                <hr>
+                <!-- <i class="fa-solid fa-gear"></i>
+                <i class="fa-solid fa-trash"></i>
+                <hr> -->
             {% endfor %}
         </ul>
     </div>
-{% endblock body %}
+    <br>
+    <a href="{% url 'addarticle' %}"><button class="btn">Əlavə et</button></a>
+    <br>
+    {% endblock body %}
 
 
 

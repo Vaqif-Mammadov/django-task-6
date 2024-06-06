@@ -1,8 +1,9 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import Article
+from .models import Article,Comment
 from .forms import ArticleForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 def home__view(request):
     articles = Article.objects.all()
@@ -69,7 +70,20 @@ def article__delete__view(request,id):
     article.delete()
     messages.success(request,"Məqaləniz silindi ")
     return redirect("dashboard")
-
-
     context={"form":form}
     return render(request,'delete.html',context)
+
+@login_required(login_url="account:login")
+
+def addcomment__view(request,id):
+    article=get_object_or_404(Article,id=id)
+
+
+    if request.method == "POST":
+        comment_author=request.POST.get('comment_author')
+        comment_content=request.POST.get('comment_content')
+        newComment=Comment(comment_author=comment_author,comment_content=comment_content)
+        newComment.article=article
+        newComment.save()
+        messages.success(request,"Şərhiniz əlavə olundu")
+    return redirect(reverse('detail',kwargs={"id":id}))
